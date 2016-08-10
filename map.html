@@ -1,0 +1,170 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <style>
+    body{
+    margin:0px;
+    }
+    #map div {
+    	display:block;
+    	position: absolute;
+    	 -moz-user-select: none;
+		  -khtml-user-select: none;
+		  -webkit-user-select: none;
+		  user-select: none;
+		  width: 96px;
+		  height: 71px;
+		  background-repeat: no-repeat;
+    }
+    #map{
+    	position: absolute;
+    }
+    #zooming{
+    	position: absolute;
+    	margin: 0.5em;
+    	display: block;
+    }
+    #zooming button:hover{
+    	background-color: rgba(255,255,255,1);
+    }
+    #zooming button {
+    	display: block;
+    	margin: 5px auto;
+    	width: 100%;
+    	padding: 0px 5px;
+    	font-weight: 900;
+    	border:none;
+    	font-size: 50pt;
+    	background-color: rgba(255,255,255,0.7);
+    }
+    #map nav a{
+    	display: block;
+    	position: absolute;
+    	background: rgba(250,250,250,0.7);
+    }
+
+    #map nav{
+    	display: block;
+    	-moz-user-select: none;
+		  -khtml-user-select: none;
+		  -webkit-user-select: none;
+		  user-select: none;
+		  position: absolute;
+
+    }
+    #objForm{
+    	display: none;
+    	position: absolute;
+    }
+    </style>
+  </head>
+
+  <body >
+  <div id=map>
+  </div>
+  <nav id="zooming">
+  	<button onclick="zoom(10);">+</button>
+  	<button onclick="zoom(-10);">-</button>
+  	<button onclick="toggleEdit();" id=editButton>С</button>
+  	<form id="objForm">
+  		<input type="text" id="objTitle" placeholder="Название" autofocus />
+  		<input type="text" id="objHref" placeholder="http://" />
+  		<input type="button" name="OK" value="OK" id=objSubmit />
+  	</form>
+  	</nav>
+  </body>
+  <script type="text/javascript">
+  var pictH = 71, 
+			pictW = 96, 
+			pictInRow = 20,
+			pictInCol = 20;
+	map.style.left="0px";
+	map.style.top="0px";
+	map.style.zoom = "100%";
+  initMap();
+  drawMap();
+  var mapEditing = false;
+  var mouseIsDown = false;
+	map.addEventListener("mousemove", function(ev) {
+		if(mouseIsDown&&!mapEditing){
+		    map.style.left=ev.clientX+startX+"px";
+		    map.style.top=ev.clientY+startY+"px";
+		    
+	  }
+	}, false);
+	map.addEventListener("mousedown", function(ev) {
+		if(!mapEditing){
+		    mouseIsDown=true;
+		    startX=-ev.clientX+parseInt(map.style.left);
+		    startY=-ev.clientY+parseInt(map.style.top);
+		}else{
+			objForm.style.display="block";
+			objForm.style.top = ev.clientY+"px";
+			objForm.style.left = ev.clientX+"px";
+
+			objSubmit.onclick = function (){
+				var a = document.createElement('a');
+				a.href = objHref.value;
+				a.innerText = objTitle.value;
+				a.style.top = ev.clientY-parseInt(map.style.top)+"px";
+				a.style.left = ev.clientX-parseInt(map.style.left)+"px";
+				a.target="_top";
+				mapObj.appendChild(a);
+				objForm.style.display="none";
+				objForm.reset();
+			}
+
+		}
+		  }, false);
+	map.addEventListener("mouseup", function(ev) {
+		    mouseIsDown=false;
+		    drawMap();
+		  }, false);
+
+
+
+  function initMap() {
+	for(var i=0;i<pictInRow*pictInCol;i++){
+				var div = document.createElement('div');
+			    div.style.background = "url('default.jpg')";
+			    div.style.top = parseInt((i)/pictInRow)*pictH;
+			    div.style.left = ((i)%pictInRow)*pictW;
+			    map.appendChild(div);
+
+	}
+	var nav = document.createElement('nav');
+		nav.id = "mapObj";
+		map.appendChild(nav);	
+	}
+	
+	function drawMap(){
+		var leftBorder = parseInt(Math.abs(parseInt(map.style.left))/(pictW*parseInt(map.style.zoom)*0.01)); 
+		var rightBorder = parseInt((document.documentElement.clientWidth + Math.abs(parseInt(map.style.left)))/(pictW*parseInt(map.style.zoom)*0.01));
+		var startingRow = parseInt(Math.abs(parseInt(map.style.top))/(pictH*parseInt(map.style.zoom)*0.01));
+		var endRow = parseInt((document.documentElement.clientHeight + Math.abs(parseInt(map.style.top)))/(pictH*parseInt(map.style.zoom)*0.01));
+		for(var i=startingRow*pictInCol+2;i<=(endRow+1)*pictInCol;i++){
+			if((i-1)%pictInRow>=leftBorder && (i-1)%pictInRow<=rightBorder){
+				    map.children[i-1].style.background = "url('map_part_"+i+".jpg')";	  
+			}
+		}
+	}
+	function zoom(inc) {
+        map.style.zoom = parseInt(map.style.zoom)+inc+"%";
+		if (parseInt(map.style.zoom)>100) {map.style.zoom="100%";}
+		drawMap();
+	}
+
+	function toggleEdit(){
+		if(mapEditing){
+			mapEditing=false; 
+			editButton.style.color="black";
+		}
+		else {
+			mapEditing=true;
+			editButton.style.color="red";
+		}
+	}
+	
+  </script>
+</html>
