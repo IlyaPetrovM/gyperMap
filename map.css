@@ -1,0 +1,73 @@
+ body{
+    margin:0px;
+     -moz-user-select: none;
+          -khtml-user-select: none;
+          -webkit-user-select: none;
+          user-select: none;
+    }
+    #map div {
+    	display:block;
+    	position: absolute;
+    	
+		  width: 96px;
+		  height: 71px;
+		  background-repeat: no-repeat;
+    }
+    #map{
+    	position: absolute;
+    }
+    #zooming{
+    	position: absolute;
+    	margin: 0.5em;
+    	display: block;
+    }
+    #zooming button:hover{
+    	background-color: rgba(255,255,255,1);
+    }
+    #zooming button {
+    	display: block;
+    	margin: 5px auto;
+    	width: 100%;
+    	padding: 0px 5px;
+    	font-weight: 900;
+    	border:none;
+    	font-size: 50pt;
+    	background-color: rgba(255,255,255,0.7);
+    }
+    #map nav a{
+    	display: block;
+    	position: absolute;
+    	background: rgba(250,250,250,0.7);
+        text-align: center;
+        word-wrap: break-word;
+    }
+    #rect{
+        display: block;
+        position: absolute;
+        background: rgba(250,250,250,0.7);
+    }
+
+    #map nav{
+    	display: block;
+    	-moz-user-select: none;
+		  -khtml-user-select: none;
+		  -webkit-user-select: none;
+		  user-select: none;
+		  position: absolute;
+
+    }
+    #objForm{
+    	display: none;
+    	position: absolute;
+        padding:none;
+    }
+    #objTitle{
+        background-color: transparent;
+        word-wrap: break-word;
+    }
+    #passwForm {
+        display: none;
+    }
+    #editButton{
+        cursor: pointer;
+    }
