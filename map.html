@@ -3,21 +3,23 @@
     <title></title>
     <meta content="The map of village Chavanga">
     <link rel="stylesheet" type="text/css" href="map.css">
+    <script src="jquery.min.js"></script>
+
   </head>
   <body >
-      
+
+
 	  <div id="map">
 	  </div>
 
 	  <nav id="zooming">
-		<!-- <button onclick="zoom(10);">+</button>
-		<button onclick="zoom(-10);">-</button> -->
-		<button onclick="toggleEdit();" id=editButton>С</button>
+		<button onclick="toggleEdit();" class=bigButtons id=editButton>С</button>
 		<div id="passwForm">
 			<input type="password" id="passwText" placeholder="Введите пароль"  autofocus="true" />
 			<input type="button" name="OK" value="OK" id=passwSubmit />
 		</div>
 	  </nav>
+	
 	<div id="rect"></div>
 	<div id="objForm">
 		<input type="text" id="objTitle" placeholder="Название" autofocus/>
@@ -25,14 +27,19 @@
 		<input type="button" name="OK" value="OK" id=objSubmit />
 	</div>
   	  <script type="text/javascript" src="map.js"></script>
-	  <script>
-	    function show() {
-	      var obj = link.import.querySelectorAll('a');
-	      for (var i = 0; i < obj.length; i++) {
-	      	mapObj.appendChild(obj[i]);
-	      }
-	    };
-  	  </script>
 	  <link rel="import" id=link href="links.html" onload="show();">
   </body>
+  <script type="text/javascript">
+  	$(document).ready(
+  		function(){
+		$("#mapObj div").hover(
+			function () {
+				if(passwCorrect) $( this ).append( $( "<button id=deleteButton onclick='editObj(this.parentNode)'>удалить</button>" ) );
+			}, 
+			function() {
+				$( this ).find( "button:last" ).remove();
+				// deleteButton.style.display="none";
+			});
+	});
+  </script>
 </html>
